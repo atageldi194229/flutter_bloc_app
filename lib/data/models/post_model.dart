@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:jsonplaceholder_app/data/models/abstract_model.dart';
 
 @immutable
-class PostModel extends ItemModel {
+class PostModel {
   const PostModel({
     required this.userId,
     required this.id,
@@ -20,7 +19,6 @@ class PostModel extends ItemModel {
 
   String toJson() => json.encode(toMap());
 
-  @override
   factory PostModel.fromMap(Map<String, dynamic> json) => PostModel(
         userId: json["userId"],
         id: json["id"],
@@ -28,7 +26,6 @@ class PostModel extends ItemModel {
         body: json["body"],
       );
 
-  @override
   Map<String, dynamic> toMap() => {
         "userId": userId,
         "id": id,

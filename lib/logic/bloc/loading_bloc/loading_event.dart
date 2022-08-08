@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart' show immutable;
+part of 'loading_bloc.dart';
 
 @immutable
 class LoadingEvent {

@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:jsonplaceholder_app/data/models/abstract_model.dart';
 
 @immutable
-class PhotoModel extends ItemModel {
+class PhotoModel {
   const PhotoModel({
     required this.albumId,
     required this.id,
@@ -23,7 +22,6 @@ class PhotoModel extends ItemModel {
 
   String toJson() => json.encode(toMap());
 
-  @override
   factory PhotoModel.fromMap(Map<String, dynamic> json) => PhotoModel(
         albumId: json["albumId"],
         id: json["id"],
@@ -32,7 +30,6 @@ class PhotoModel extends ItemModel {
         thumbnailUrl: json["thumbnailUrl"],
       );
 
-  @override
   Map<String, dynamic> toMap() => {
         "albumId": albumId,
         "id": id,

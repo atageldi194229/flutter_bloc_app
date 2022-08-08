@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart' show immutable;
-import 'package:jsonplaceholder_app/data/models/abstract_model.dart';
 
 @immutable
-class AlbumModel extends ItemModel {
+class AlbumModel {
   const AlbumModel({
     required this.userId,
     required this.id,
@@ -19,14 +18,12 @@ class AlbumModel extends ItemModel {
 
   String toJson() => json.encode(toMap());
 
-  @override
   factory AlbumModel.fromMap(Map<String, dynamic> json) => AlbumModel(
         userId: json["userId"],
         id: json["id"],
         title: json["title"],
       );
 
-  @override
   Map<String, dynamic> toMap() => {
         "userId": userId,
         "id": id,

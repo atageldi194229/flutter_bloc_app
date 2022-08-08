@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jsonplaceholder_app/data/models/user_model.dart';
-import 'package:jsonplaceholder_app/presentation/generic_bloc_listener.dart';
 
 class UserDetailScreen extends StatelessWidget {
   final UserModel user;
@@ -29,34 +28,32 @@ class UserDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(user.username),
       ),
-      body: GenericBlocListener(
-        child: SingleChildScrollView(
-          child: DataTable(
-            columns: const <DataColumn>[
-              DataColumn(
-                label: Text(
-                  'Key',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
+      body: SingleChildScrollView(
+        child: DataTable(
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Text(
+                'Key',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
-              DataColumn(
-                label: Text(
-                  'Value',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
+            ),
+            DataColumn(
+              label: Text(
+                'Value',
+                style: TextStyle(fontStyle: FontStyle.italic),
               ),
-            ],
-            rows: data.entries
-                .map<DataRow>(
-                  (e) => DataRow(
-                    cells: <DataCell>[
-                      DataCell(Text(e.key)),
-                      DataCell(Text(e.value)),
-                    ],
-                  ),
-                )
-                .toList(),
-          ),
+            ),
+          ],
+          rows: data.entries
+              .map<DataRow>(
+                (e) => DataRow(
+                  cells: <DataCell>[
+                    DataCell(Text(e.key)),
+                    DataCell(Text(e.value)),
+                  ],
+                ),
+              )
+              .toList(),
         ),
       ),
     );
