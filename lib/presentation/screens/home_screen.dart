@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jsonplaceholder_app/data/models/user_model.dart';
 import 'package:jsonplaceholder_app/logic/bloc/abstract/item_list_bloc/item_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/user_list_bloc.dart';
 import 'package:jsonplaceholder_app/presentation/cards/user_card.dart';
@@ -15,9 +16,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Users"),
       ),
-      body: BlocBuilder<UserListBloc, ItemListState>(
-        buildWhen: (previous, current) =>
-            previous.list.length != current.list.length,
+      body: BlocBuilder<UserListBloc, ItemListState<UserModel>>(
         builder: (context, state) {
           var size = MediaQuery.of(context).size;
           return SizedBox(

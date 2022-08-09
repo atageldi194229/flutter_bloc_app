@@ -55,7 +55,7 @@ class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
 
       // stop loading & set list
       loadingBloc.add(const StopLoadingEvent());
-      emit(ItemListState(list));
+      emit(ItemListState([...state.list, ...list]));
     } catch (_) {
       // stop loading & show load error dialog
       loadingBloc.add(const StopLoadingEvent());

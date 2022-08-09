@@ -24,6 +24,11 @@ class App extends StatelessWidget {
         navigatorKey: navigatorKey,
         title: "Foo",
         theme: ThemeData(primaryColor: Colors.blue),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          /* dark theme settings */
+        ),
+        themeMode: ThemeMode.dark,
         debugShowCheckedModeBanner: false,
         home: const HomeScreen(),
         builder: (context, child) {
@@ -44,7 +49,10 @@ class App extends StatelessWidget {
               BlocListener<AppErrorBloc, AppErrorState>(
                 listener: (context, state) {
                   if (state.error != null) {
-                    showLoadError(error: state.error!, context: context);
+                    showLoadError(
+                      error: state.error!,
+                      context: navigatorKey.currentContext!,
+                    );
                   }
                 },
               ),

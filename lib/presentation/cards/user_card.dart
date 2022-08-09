@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jsonplaceholder_app/data/models/user_model.dart';
 import 'package:jsonplaceholder_app/data/repositories/album_repository.dart';
+import 'package:jsonplaceholder_app/data/repositories/photo_repository.dart';
 import 'package:jsonplaceholder_app/data/repositories/post_repository.dart';
 import 'package:jsonplaceholder_app/logic/bloc/album_list_bloc.dart';
+import 'package:jsonplaceholder_app/logic/bloc/photo_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/post_list_bloc.dart';
 import 'package:jsonplaceholder_app/presentation/screens/user_detail_screen.dart';
 
@@ -21,7 +23,24 @@ class UserCard extends StatelessWidget {
           onTap: () {
             context.read<AlbumListBloc>().add(
                   LoadUserAlbumsEvent(
-                    loader: () => AlbumRepository().getForUser(user.id),
+                    loader: () {
+                      return AlbumRepository()
+                          .getForUser(user.id)
+                          .then((albums) {
+                        final fooBloc = context.read<PhotoListBloc>();
+
+                        for (var album in albums) {
+                          fooBloc.add(
+                            LoadAlbumPhotosEvent(
+                              loader: () =>
+                                  PhotoRepository().getForAlbum(album.id),
+                              albumId: album.id,
+                            ),
+                          );
+                        }
+                        return albums;
+                      });
+                    },
                     userId: user.id,
                   ),
                 );
