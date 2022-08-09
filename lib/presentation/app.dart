@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jsonplaceholder_app/data/repositories/user_repository.dart';
 import 'package:jsonplaceholder_app/logic/bloc/album_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/app_error_bloc/app_error_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/comment_list_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:jsonplaceholder_app/logic/bloc/photo_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/post_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/user_list_bloc.dart';
 import 'package:jsonplaceholder_app/presentation/dialogs/show_load_error.dart';
+import 'package:jsonplaceholder_app/presentation/global/keys.dart';
 import 'package:jsonplaceholder_app/presentation/loading/loading_screen.dart';
 import 'package:jsonplaceholder_app/presentation/screens/home_screen.dart';
 
@@ -19,6 +21,7 @@ class App extends StatelessWidget {
     return MultiBlocProvider(
       providers: _getProviders(),
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         title: "Foo",
         theme: ThemeData(primaryColor: Colors.blue),
         debugShowCheckedModeBanner: false,
@@ -27,10 +30,10 @@ class App extends StatelessWidget {
           return MultiBlocListener(
             listeners: [
               BlocListener<LoadingBloc, LoadState>(
-                listener: (context, state) {
+                listener: (_, state) {
                   if (state is LoadStateOn) {
                     LoadingScreen.instance().show(
-                      context: context,
+                      navigatorKey: navigatorKey,
                       text: "Loading",
                     );
                   } else {
@@ -53,7 +56,7 @@ class App extends StatelessWidget {
     );
   }
 
-  _getProviders() {
+  List<BlocProvider> _getProviders() {
     final loadingBloc = LoadingBloc();
     final appErrorBloc = AppErrorBloc();
 
@@ -78,7 +81,7 @@ class App extends StatelessWidget {
       loadingBloc: loadingBloc,
     );
 
-    return [
+    return <BlocProvider>[
       BlocProvider<LoadingBloc>(
         create: (BuildContext context) => loadingBloc,
       ),
@@ -86,7 +89,12 @@ class App extends StatelessWidget {
         create: (BuildContext context) => appErrorBloc,
       ),
       BlocProvider<UserListBloc>(
-        create: (BuildContext context) => userListBloc,
+        create: (BuildContext context) => userListBloc
+          ..add(
+            LoadUsersEvent(
+              loader: UserRepository().getAll,
+            ),
+          ),
       ),
       BlocProvider<AlbumListBloc>(
         create: (BuildContext context) => albumListBloc,

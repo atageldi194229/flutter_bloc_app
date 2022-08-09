@@ -7,7 +7,6 @@ void main() async {
 
   await Hive.initFlutter();
   await Hive.openLazyBox("appBox");
-  await Hive.openLazyBox("isCachedBox");
 
   runApp(const App());
 }

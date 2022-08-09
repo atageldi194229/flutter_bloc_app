@@ -10,14 +10,15 @@ class LoadingScreen {
   LoadingScreenController? controller;
 
   void show({
-    required BuildContext context,
+    // required BuildContext context,
+    required GlobalKey<NavigatorState> navigatorKey,
     required String text,
   }) {
     if (controller?.update(text) ?? false) {
       return;
     } else {
       controller = showOverlay(
-        context: context,
+        navigatorKey: navigatorKey,
         text: text,
       );
     }
@@ -29,13 +30,18 @@ class LoadingScreen {
   }
 
   LoadingScreenController showOverlay({
-    required BuildContext context,
+    // required BuildContext context,
+    required GlobalKey<NavigatorState> navigatorKey,
     required String text,
   }) {
     final controller = StreamController<String>();
     controller.add(text);
 
-    final state = Overlay.of(context);
+// access OverlayState
+    // final OverlayState state = Overlay.of(context);
+    final OverlayState? state = navigatorKey.currentState!.overlay;
+    BuildContext context = navigatorKey.currentContext!;
+
     // final renderBox = context.findRenderObject() as RenderBox;
     // final size = renderBox.size;
 

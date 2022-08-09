@@ -30,28 +30,34 @@ class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
     LoadItemListEvent<T> event,
     Emitter<ItemListState<T>> emit,
   ) async {
+    // start loading
     loadingBloc.add(const StartLoadingEvent());
 
     try {
       final key = event.path;
       late Iterable<T> list;
 
-      if (!box.containsKey(key)) {
+      // first check cache
+      if (box.containsKey(key)) {
         String value = await box.get(key);
         list = (jsonDecode(value) as List).map(
           (e) => getItemFromJson(e),
         );
 
+        // stop loading & set list
         loadingBloc.add(const StopLoadingEvent());
         emit(ItemListState(list));
       }
 
+      // get data from loader
       list = await event.loader();
       box.put(key, jsonEncode(list.toList()));
 
+      // stop loading & set list
       loadingBloc.add(const StopLoadingEvent());
       emit(ItemListState(list));
     } catch (_) {
+      // stop loading & show load error dialog
       loadingBloc.add(const StopLoadingEvent());
       appErrorBloc.add(const AppErrorEvent(LoadError()));
     }
