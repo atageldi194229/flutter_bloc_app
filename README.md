@@ -1,6 +1,14 @@
-# jsonplaceholder_app
+# BLoC pattern in flutter
 
-A new Flutter project.
+- App with simple ui
+- BLoC pattern used
+- Api calls
+- Singleton loader
+- Error handler
+- Data caching using hive
+- OOP
+- Mockable classes
+- Testable blocs
 
 ## Getting Started
 
