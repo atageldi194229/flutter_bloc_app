@@ -2,7 +2,7 @@
 
 - App with simple ui
 - BLoC pattern used
-- Api calls
+- Api calls from service `http://jsonplaceholder.typicode.com/` [link](http://jsonplaceholder.typicode.com/)
 - Singleton loader
 - Error handler
 - Data caching using hive
