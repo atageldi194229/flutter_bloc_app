@@ -9,6 +9,7 @@
 - OOP
 - Mockable classes
 - Testable blocs
+- Simple CI/CD (github actions - Build & Release)
 
 ## Getting Started
 
