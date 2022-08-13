@@ -1,23 +1,22 @@
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
+    tags:
+      - "v*"
 name: "Build & Release"
 jobs:
-  build:
-    name: Build & Release
+  build-android-ios:
+    name: Build android & ios files
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v1
+
       - uses: actions/setup-java@v1
         with:
-          java-version: "12.x"
+          java-version: '12.x'
+      
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: "3.0.1"
+          flutter-version: '3.0.1'
       - run: flutter pub get
       # - run: flutter test
       # - run: flutter build apk --debug --split-per-abi
@@ -31,9 +30,48 @@ jobs:
           ln -s ../Runner.app
           cd ..
           zip -r app.ipa Payload
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            build/app/outputs/apk/debug/*
+            build/ios/iphoneos/app.ipa
+            build/app/outputs/apk/release/*
+  build-on-windows:
+    name: Build windows files & release
+    runs-on: windows-latest
+    needs: build-android-ios
+    steps:
+
+      - uses: actions/checkout@v1
+          
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: '3.0.1'
+      - run: flutter pub get
+      - run: ECHO 'Y' | flutter pub run msix:create
+
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: artifacts
+
+      - name: Show downloaded artifacts
+        run: ls artifacts
+
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa,build/app/outputs/apk/release/*"
-          tag: v1.0.${{ github.run_number }}
+          artifacts: "artifacts/ios/iphoneos/app.ipa,artifacts/app/outputs/apk/release/*,build/windows/runner/Release/*.msix"
+          tag: ${{ steps.get_version.outputs.VERSION }}
           token: ${{ secrets.TOKEN }}
