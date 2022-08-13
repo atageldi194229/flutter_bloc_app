@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -41,5 +43,25 @@ class CommentModel {
   @override
   String toString() {
     return toMap().toString();
+  }
+
+  @override
+  bool operator ==(covariant CommentModel other) {
+    if (identical(this, other)) return true;
+
+    return other.postId == postId &&
+        other.id == id &&
+        other.name == name &&
+        other.email == email &&
+        other.body == body;
+  }
+
+  @override
+  int get hashCode {
+    return postId.hashCode ^
+        id.hashCode ^
+        name.hashCode ^
+        email.hashCode ^
+        body.hashCode;
   }
 }

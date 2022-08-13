@@ -6,7 +6,7 @@ Future<T?> showGenericDialog<T>({
   required BuildContext context,
   required String title,
   required String content,
-  required DialogOptionBuilder optionsBuilder,
+  required DialogOptionBuilder<T> optionsBuilder,
 }) {
   final options = optionsBuilder();
   return showDialog<T>(

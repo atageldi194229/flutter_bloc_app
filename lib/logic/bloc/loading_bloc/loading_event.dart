@@ -1,7 +1,7 @@
 part of 'loading_bloc.dart';
 
 @immutable
-class LoadingEvent {
+abstract class LoadingEvent {
   const LoadingEvent();
 }
 

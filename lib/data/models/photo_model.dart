@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -41,5 +43,25 @@ class PhotoModel {
   @override
   String toString() {
     return toMap().toString();
+  }
+
+  @override
+  bool operator ==(covariant PhotoModel other) {
+    if (identical(this, other)) return true;
+
+    return other.albumId == albumId &&
+        other.id == id &&
+        other.title == title &&
+        other.url == url &&
+        other.thumbnailUrl == thumbnailUrl;
+  }
+
+  @override
+  int get hashCode {
+    return albumId.hashCode ^
+        id.hashCode ^
+        title.hashCode ^
+        url.hashCode ^
+        thumbnailUrl.hashCode;
   }
 }

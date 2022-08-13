@@ -8,7 +8,7 @@ import 'package:jsonplaceholder_app/logic/bloc/loading_bloc/loading_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/photo_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/post_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/user_list_bloc.dart';
-import 'package:jsonplaceholder_app/presentation/dialogs/show_load_error.dart';
+import 'package:jsonplaceholder_app/presentation/dialogs/show_app_error.dart';
 import 'package:jsonplaceholder_app/presentation/global/keys.dart';
 import 'package:jsonplaceholder_app/presentation/loading/loading_screen.dart';
 import 'package:jsonplaceholder_app/presentation/screens/home_screen.dart';
@@ -49,10 +49,16 @@ class App extends StatelessWidget {
               BlocListener<AppErrorBloc, AppErrorState>(
                 listener: (context, state) {
                   if (state.error != null) {
-                    showLoadError(
-                      error: state.error!,
+                    final error = state.error!;
+
+                    showAppError(
+                      error: error,
                       context: navigatorKey.currentContext!,
-                    );
+                    ).then((value) {
+                      context
+                          .read<AppErrorBloc>()
+                          .add(AppErrorRemoveEvent(error));
+                    });
                   }
                 },
               ),
@@ -68,14 +74,6 @@ class App extends StatelessWidget {
     final loadingBloc = LoadingBloc();
     final appErrorBloc = AppErrorBloc();
 
-    final userListBloc = UserListBloc(
-      appErrorBloc: appErrorBloc,
-      loadingBloc: loadingBloc,
-    );
-    final albumListBloc = AlbumListBloc(
-      appErrorBloc: appErrorBloc,
-      loadingBloc: loadingBloc,
-    );
     final photoListBloc = PhotoListBloc(
       appErrorBloc: appErrorBloc,
       loadingBloc: loadingBloc,
@@ -87,6 +85,16 @@ class App extends StatelessWidget {
     final commentListBloc = CommentListBloc(
       appErrorBloc: appErrorBloc,
       loadingBloc: loadingBloc,
+    );
+
+    final userListBloc = UserListBloc(
+      appErrorBloc: appErrorBloc,
+      loadingBloc: loadingBloc,
+    );
+    final albumListBloc = AlbumListBloc(
+      appErrorBloc: appErrorBloc,
+      loadingBloc: loadingBloc,
+      photoListBloc: photoListBloc,
     );
 
     return <BlocProvider>[

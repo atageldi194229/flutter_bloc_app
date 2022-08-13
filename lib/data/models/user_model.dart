@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -54,6 +56,32 @@ class UserModel {
   String toString() {
     return toMap().toString();
   }
+
+  @override
+  bool operator ==(covariant UserModel other) {
+    if (identical(this, other)) return true;
+
+    return other.id == id &&
+        other.name == name &&
+        other.username == username &&
+        other.email == email &&
+        other.address == address &&
+        other.phone == phone &&
+        other.website == website &&
+        other.company == company;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+        name.hashCode ^
+        username.hashCode ^
+        email.hashCode ^
+        address.hashCode ^
+        phone.hashCode ^
+        website.hashCode ^
+        company.hashCode;
+  }
 }
 
 @immutable
@@ -96,6 +124,26 @@ class Address {
   String toString() {
     return toMap().toString();
   }
+
+  @override
+  bool operator ==(covariant Address other) {
+    if (identical(this, other)) return true;
+
+    return other.street == street &&
+        other.suite == suite &&
+        other.city == city &&
+        other.zipcode == zipcode &&
+        other.geo == geo;
+  }
+
+  @override
+  int get hashCode {
+    return street.hashCode ^
+        suite.hashCode ^
+        city.hashCode ^
+        zipcode.hashCode ^
+        geo.hashCode;
+  }
 }
 
 @immutable
@@ -126,6 +174,16 @@ class Geo {
   String toString() {
     return toMap().toString();
   }
+
+  @override
+  bool operator ==(covariant Geo other) {
+    if (identical(this, other)) return true;
+
+    return other.lat == lat && other.lng == lng;
+  }
+
+  @override
+  int get hashCode => lat.hashCode ^ lng.hashCode;
 }
 
 @immutable
@@ -160,4 +218,16 @@ class Company {
   String toString() {
     return toMap().toString();
   }
+
+  @override
+  bool operator ==(covariant Company other) {
+    if (identical(this, other)) return true;
+
+    return other.name == name &&
+        other.catchPhrase == catchPhrase &&
+        other.bs == bs;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ catchPhrase.hashCode ^ bs.hashCode;
 }
