@@ -25,6 +25,20 @@ class PostDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text("Post detail: ${post.title}"),
       ),
+      floatingActionButton:
+          (Responsive.isMobile(context) || Responsive.isSmallMobile(context))
+              ? FloatingActionButton(
+                  onPressed: (() {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return CommentForm(post.id);
+                      },
+                    );
+                  }),
+                  child: const Icon(Icons.comment),
+                )
+              : null,
       body: SingleChildScrollView(
         child: BlocBuilder<PhotoListBloc, ItemListState<PhotoModel>>(
           builder: (context, state) {
@@ -42,8 +56,11 @@ class PostDetailScreen extends StatelessWidget {
                       children: [
                         PostDetails(post: post),
                         const SizedBox(height: kDefaultPadding),
-                        CommentForm(post.id),
-                        const SizedBox(height: kDefaultPadding),
+                        if (Responsive.isTablet(context) ||
+                            Responsive.isDesktop(context)) ...[
+                          CommentForm(post.id),
+                          const SizedBox(height: kDefaultPadding),
+                        ],
                         if (!Responsive.isDesktop(context)) CommentList(post)
                       ],
                     ),

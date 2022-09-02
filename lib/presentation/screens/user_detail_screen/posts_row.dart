@@ -5,6 +5,7 @@ import 'package:jsonplaceholder_app/data/models/user_model.dart';
 import 'package:jsonplaceholder_app/logic/bloc/abstract/item_list_bloc/item_list_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/post_list_bloc.dart';
 import 'package:jsonplaceholder_app/presentation/cards/post_card.dart';
+import 'package:jsonplaceholder_app/presentation/screens/user_posts_screen.dart';
 
 class PostsRow extends StatelessWidget {
   const PostsRow({
@@ -37,7 +38,12 @@ class PostsRow extends StatelessWidget {
                     padding: const EdgeInsets.all(8.0),
                     child: TextButton(
                       onPressed: () {
-                        // TODO: Posts more... in user detail
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UserPostsScreen(user: user),
+                          ),
+                        );
                       },
                       child: const Text("More..."),
                     ),

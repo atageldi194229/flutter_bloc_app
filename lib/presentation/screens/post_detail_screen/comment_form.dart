@@ -37,13 +37,20 @@ class CommentForm extends HookWidget {
               const Text("Comment Form"),
               const SizedBox(height: kDefaultPadding),
               TextFormField(
+                keyboardType: TextInputType.emailAddress,
                 controller: emailController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter correct email';
+                    return 'Should not be empty';
                   }
 
-                  // TODO: email validation
+                  bool emailValid = RegExp(
+                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value);
+
+                  if (!emailValid) {
+                    return 'Please enter correct email';
+                  }
 
                   return null;
                 },
@@ -51,6 +58,7 @@ class CommentForm extends HookWidget {
               ),
               const SizedBox(height: kDefaultPadding),
               TextFormField(
+                keyboardType: TextInputType.name,
                 controller: nameController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -62,6 +70,7 @@ class CommentForm extends HookWidget {
               ),
               const SizedBox(height: kDefaultPadding),
               TextFormField(
+                keyboardType: TextInputType.multiline,
                 controller: bodyController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -91,7 +100,7 @@ class CommentForm extends HookWidget {
                         );
                   }
                 },
-                child: const Text('Submit'),
+                child: const Text('Send comment'),
               ),
             ],
           ),

@@ -18,6 +18,7 @@ class Storage {
   Future<dynamic> getCachedOrLoad(ApiLoader apiLoader) async {
     final c = Completer<dynamic>();
 
+    // always update the data
     apiLoader.loader().then((res) {
       final data = res.data;
 
@@ -32,6 +33,7 @@ class Storage {
       }
     });
 
+    // get data from cache
     if (apiBox.containsKey(apiLoader.path)) {
       String raw = await apiBox.get(apiLoader.path);
 

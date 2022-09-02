@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,14 +39,14 @@ class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
 
       // emit new data
       emit(ItemListState({...state.list, ...list}.toList()));
+
+      return;
     } on DioError catch (_) {
-      // stop loading & show load error dialog
-      loadingBloc.add(const StopLoadingEvent());
-      appErrorBloc.add(const AppErrorAddEvent(LoadError()));
-    } catch (_) {
-      // stop loading & show load error dialog
-      loadingBloc.add(const StopLoadingEvent());
-      appErrorBloc.add(const AppErrorAddEvent(LoadError()));
-    }
+    } on SocketException catch (_) {
+    } catch (_) {}
+
+    // stop loading & show load error dialog
+    loadingBloc.add(const StopLoadingEvent());
+    appErrorBloc.add(const AppErrorAddEvent(LoadError()));
   }
 }

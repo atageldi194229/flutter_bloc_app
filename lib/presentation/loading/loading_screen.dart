@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:jsonplaceholder_app/presentation/loading/loading_screen_controller.dart';
+
+import 'loading_screen_controller.dart';
 
 class LoadingScreen {
   LoadingScreen._sharedInstance();

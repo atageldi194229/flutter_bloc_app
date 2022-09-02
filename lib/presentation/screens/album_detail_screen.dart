@@ -6,6 +6,7 @@ import 'package:jsonplaceholder_app/logic/bloc/abstract/item_list_bloc/item_list
 import 'package:jsonplaceholder_app/logic/bloc/photo_list_bloc.dart';
 import 'package:jsonplaceholder_app/presentation/cards/photo_card.dart';
 import 'package:jsonplaceholder_app/presentation/responsive.dart';
+import 'package:jsonplaceholder_app/presentation/screens/photo_viewer_screen.dart';
 
 class AlbumDetailScreen extends StatelessWidget {
   final AlbumModel album;
@@ -22,11 +23,27 @@ class AlbumDetailScreen extends StatelessWidget {
       ),
       body: BlocBuilder<PhotoListBloc, ItemListState<PhotoModel>>(
         builder: (context, state) {
-          final photos = state.list.where((photo) => photo.albumId == album.id);
+          final photos =
+              state.list.where((photo) => photo.albumId == album.id).toList();
 
           return GridView.count(
             crossAxisCount: Responsive.getValue<int>(context, 1, 2, 3, 5),
-            children: photos.map<Widget>((e) => PhotoCard(e)).toList(),
+            children: photos
+                .map<Widget>((e) => PhotoCard(
+                      photo: e,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PhotoViewerScreen(
+                              photos: photos,
+                              defaultIndex: photos.indexOf(e),
+                            ),
+                          ),
+                        );
+                      },
+                    ))
+                .toList(),
           );
         },
       ),

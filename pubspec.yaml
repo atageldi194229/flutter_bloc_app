@@ -42,6 +42,7 @@ dependencies:
   hive_flutter: ^1.1.0
   cached_network_image: ^3.2.1
   flutter_hooks: ^0.18.5+1
+  photo_view: ^0.14.0
 
 dev_dependencies:
   flutter_test:
