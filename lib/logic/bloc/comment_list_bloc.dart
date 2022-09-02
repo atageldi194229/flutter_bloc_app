@@ -27,8 +27,10 @@ class CommentListBloc extends ItemListBloc<ItemModel> {
 
           loadingBloc.add(const StopLoadingEvent());
         } on DioError catch (_) {
+          loadingBloc.add(const StopLoadingEvent());
           appErrorBloc.add(const AppErrorAddEvent(LoadError()));
         } catch (_) {
+          loadingBloc.add(const StopLoadingEvent());
           appErrorBloc.add(const AppErrorAddEvent(LoadError()));
         }
       },
