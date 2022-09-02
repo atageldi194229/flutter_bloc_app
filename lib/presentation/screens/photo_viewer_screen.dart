@@ -1,25 +1,37 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 
 import 'package:jsonplaceholder_app/data/models/photo_model.dart';
 
-class PhotoViewerScreen extends HookWidget {
+class PhotoViewerScreen extends StatefulWidget {
   const PhotoViewerScreen({
     Key? key,
     required this.photos,
     this.defaultIndex = 0,
+    this.pageController,
   }) : super(key: key);
 
   final List<PhotoModel> photos;
   final int defaultIndex;
+  final PageController? pageController;
+
+  @override
+  State<PhotoViewerScreen> createState() => _PhotoViewerScreenState();
+}
+
+class _PhotoViewerScreenState extends State<PhotoViewerScreen> {
+  late int currentIndex = widget.defaultIndex;
+
+  void onPageChanged(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = useState(defaultIndex);
-
     return Scaffold(
       appBar: AppBar(title: const Text("Photo Gallery")),
       body: Container(
@@ -31,13 +43,11 @@ class PhotoViewerScreen extends HookWidget {
               scrollPhysics: const BouncingScrollPhysics(),
               builder: (BuildContext context, int index) {
                 return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(photos[index].url),
+                  imageProvider: NetworkImage(widget.photos[index].url),
                   initialScale: PhotoViewComputedScale.contained * 0.8,
-                  heroAttributes:
-                      PhotoViewHeroAttributes(tag: photos[index].id),
                 );
               },
-              itemCount: photos.length,
+              itemCount: widget.photos.length,
               loadingBuilder: (context, event) => Center(
                 child: SizedBox(
                   width: 20.0,
@@ -51,13 +61,13 @@ class PhotoViewerScreen extends HookWidget {
                 ),
               ),
               // backgroundDecoration: widget.backgroundDecoration,
-              // pageController: widget.pageController,
-              onPageChanged: (index) => currentIndex.value = index,
+              pageController: widget.pageController,
+              onPageChanged: onPageChanged,
             ),
             Container(
               padding: const EdgeInsets.all(20.0),
               child: Text(
-                photos[currentIndex.value].title,
+                widget.photos[currentIndex].title,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 17.0,

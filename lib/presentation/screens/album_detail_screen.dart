@@ -28,22 +28,25 @@ class AlbumDetailScreen extends StatelessWidget {
 
           return GridView.count(
             crossAxisCount: Responsive.getValue<int>(context, 1, 2, 3, 5),
-            children: photos
-                .map<Widget>((e) => PhotoCard(
-                      photo: e,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PhotoViewerScreen(
-                              photos: photos,
-                              defaultIndex: photos.indexOf(e),
-                            ),
-                          ),
-                        );
-                      },
-                    ))
-                .toList(),
+            children: photos.map<Widget>((e) {
+              return PhotoCard(
+                photo: e,
+                onTap: () {
+                  final index = photos.indexOf(e);
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PhotoViewerScreen(
+                        photos: photos,
+                        defaultIndex: index,
+                        pageController: PageController(initialPage: index),
+                      ),
+                    ),
+                  );
+                },
+              );
+            }).toList(),
           );
         },
       ),
