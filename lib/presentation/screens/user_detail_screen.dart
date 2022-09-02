@@ -66,46 +66,100 @@ class UserDetailScreen extends StatelessWidget {
                   )
                   .toList(),
             ),
-            BlocBuilder<AlbumListBloc, ItemListState<AlbumModel>>(
-              builder: (context, state) {
-                return SizedBox(
-                  height: 200,
-                  child: ListView(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      ...state.list.take(3).map((e) => AlbumCard(e)).toList(),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text("More..."),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+            const _AlbumsRow(),
+            const _PostsRow(),
+            const SizedBox(height: 16),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PostsRow extends StatelessWidget {
+  const _PostsRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 5.0,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Posts:",
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            BlocBuilder<PostListBloc, ItemListState<PostModel>>(
-              builder: (context, state) {
-                return Column(
+          ),
+          BlocBuilder<PostListBloc, ItemListState<PostModel>>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  ...state.list.take(3).map((e) => PostCard(e)).toList(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextButton(
+                      onPressed: () {
+                        // TODO: Posts more... in user detail
+                      },
+                      child: const Text("More..."),
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AlbumsRow extends StatelessWidget {
+  const _AlbumsRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      elevation: 5.0,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Albums:",
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ),
+          BlocBuilder<AlbumListBloc, ItemListState<AlbumModel>>(
+            builder: (context, state) {
+              return SizedBox(
+                height: 200,
+                child: ListView(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
                   children: [
-                    ...state.list.take(3).map((e) => PostCard(e)).toList(),
+                    ...state.list.take(3).map((e) => AlbumCard(e)).toList(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // TODO: Albums more... in user detail
+                        },
                         child: const Text("More..."),
                       ),
                     ),
                   ],
-                );
-              },
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }

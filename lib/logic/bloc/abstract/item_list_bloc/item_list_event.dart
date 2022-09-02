@@ -11,6 +11,4 @@ class LoadItemListEvent<T> extends ItemListEvent<T> {
   const LoadItemListEvent({
     required this.loader,
   });
-
-  String get path => "/items";
 }

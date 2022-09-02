@@ -16,9 +16,6 @@ class PostListBloc extends ItemListBloc<ItemModel> {
         ) {
     on<LoadUserPostsEvent>(onLoadItemList);
   }
-
-  @override
-  ItemModel getItemFromJson(e) => ItemModel.fromJson(e);
 }
 
 @immutable
@@ -28,7 +25,4 @@ class LoadUserPostsEvent extends LoadItemListEvent<ItemModel> {
     required super.loader,
     required this.userId,
   });
-
-  @override
-  String get path => "users/$userId/posts";
 }

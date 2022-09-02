@@ -34,9 +34,6 @@ class AlbumListBloc extends ItemListBloc<ItemModel> {
       },
     );
   }
-
-  @override
-  ItemModel getItemFromJson(e) => ItemModel.fromJson(e);
 }
 
 @immutable
@@ -46,7 +43,4 @@ class LoadUserAlbumsEvent extends LoadItemListEvent<ItemModel> {
     required super.loader,
     required this.userId,
   });
-
-  @override
-  String get path => "users/$userId/albums";
 }

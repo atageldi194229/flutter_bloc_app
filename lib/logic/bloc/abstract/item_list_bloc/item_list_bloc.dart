@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -22,10 +21,6 @@ class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
     box = Hive.lazyBox("appBox");
   }
 
-  T getItemFromJson(e) {
-    throw Exception("Unimplemented error");
-  }
-
   onLoadItemList(
     LoadItemListEvent<T> event,
     Emitter<ItemListState<T>> emit,
@@ -34,28 +29,18 @@ class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
     loadingBloc.add(const StartLoadingEvent());
 
     try {
-      final key = event.path;
-      late Iterable<T> list;
-
-      // first check cache
-      if (box.containsKey(key)) {
-        String value = await box.get(key);
-        list = (jsonDecode(value) as List).map(
-          (e) => getItemFromJson(e),
-        );
-
-        // stop loading & set list
-        loadingBloc.add(const StopLoadingEvent());
-        emit(ItemListState(list));
-      }
-
       // get data from loader
-      list = await event.loader();
-      box.put(key, jsonEncode(list.toList()));
+      final Iterable<T> list = await event.loader();
 
       // stop loading & set list
       loadingBloc.add(const StopLoadingEvent());
+
+      // emit new data
       emit(ItemListState({...state.list, ...list}.toList()));
+    } on DioError catch (_) {
+      // stop loading & show load error dialog
+      loadingBloc.add(const StopLoadingEvent());
+      appErrorBloc.add(const AppErrorAddEvent(LoadError()));
     } catch (_) {
       // stop loading & show load error dialog
       loadingBloc.add(const StopLoadingEvent());

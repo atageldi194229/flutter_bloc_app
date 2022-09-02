@@ -1,19 +1,13 @@
 import 'package:jsonplaceholder_app/data/api/api_client.dart';
 
 class PostApi {
-  Future<dynamic> getAll() async {
-    var response = await ApiClient.instance()
-        .dio
-        .get("https://jsonplaceholder.typicode.com/posts");
+  ApiLoader getAll() => ApiLoader(
+        path: "/posts",
+        loader: (path) => ApiClient().dio.get(path),
+      );
 
-    return response.data;
-  }
-
-  Future<dynamic> getForUser(int userId) async {
-    var response = await ApiClient.instance()
-        .dio
-        .get("https://jsonplaceholder.typicode.com/users/$userId/posts");
-
-    return response.data;
-  }
+  ApiLoader getForUser(int userId) => ApiLoader(
+        path: "/users/$userId/posts",
+        loader: (path) => ApiClient().dio.get(path),
+      );
 }

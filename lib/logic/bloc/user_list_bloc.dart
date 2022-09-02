@@ -16,15 +16,9 @@ class UserListBloc extends ItemListBloc<ItemModel> {
         ) {
     on<LoadUsersEvent>(onLoadItemList);
   }
-
-  @override
-  ItemModel getItemFromJson(e) => ItemModel.fromJson(e);
 }
 
 @immutable
 class LoadUsersEvent extends LoadItemListEvent<ItemModel> {
   const LoadUsersEvent({required super.loader});
-
-  @override
-  String get path => "/users";
 }

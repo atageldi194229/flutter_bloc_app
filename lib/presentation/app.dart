@@ -91,39 +91,27 @@ class App extends StatelessWidget {
       appErrorBloc: appErrorBloc,
       loadingBloc: loadingBloc,
     );
+
     final albumListBloc = AlbumListBloc(
       appErrorBloc: appErrorBloc,
       loadingBloc: loadingBloc,
       photoListBloc: photoListBloc,
     );
 
+    userListBloc.add(
+      LoadUsersEvent(
+        loader: UserRepository().getAll,
+      ),
+    );
+
     return <BlocProvider>[
-      BlocProvider<LoadingBloc>(
-        create: (BuildContext context) => loadingBloc,
-      ),
-      BlocProvider<AppErrorBloc>(
-        create: (BuildContext context) => appErrorBloc,
-      ),
-      BlocProvider<UserListBloc>(
-        create: (BuildContext context) => userListBloc
-          ..add(
-            LoadUsersEvent(
-              loader: UserRepository().getAll,
-            ),
-          ),
-      ),
-      BlocProvider<AlbumListBloc>(
-        create: (BuildContext context) => albumListBloc,
-      ),
-      BlocProvider<PhotoListBloc>(
-        create: (BuildContext context) => photoListBloc,
-      ),
-      BlocProvider<PostListBloc>(
-        create: (BuildContext context) => postListBloc,
-      ),
-      BlocProvider<CommentListBloc>(
-        create: (BuildContext context) => commentListBloc,
-      ),
+      BlocProvider<LoadingBloc>(create: (_) => loadingBloc),
+      BlocProvider<AppErrorBloc>(create: (_) => appErrorBloc),
+      BlocProvider<AlbumListBloc>(create: (_) => albumListBloc),
+      BlocProvider<PhotoListBloc>(create: (_) => photoListBloc),
+      BlocProvider<PostListBloc>(create: (_) => postListBloc),
+      BlocProvider<CommentListBloc>(create: (_) => commentListBloc),
+      BlocProvider<UserListBloc>(create: (_) => userListBloc),
     ];
   }
 }

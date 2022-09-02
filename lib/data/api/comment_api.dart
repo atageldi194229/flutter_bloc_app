@@ -1,27 +1,18 @@
 import 'package:jsonplaceholder_app/data/api/api_client.dart';
 
 class CommentApi {
-  Future<dynamic> getAll() async {
-    var response = await ApiClient.instance()
-        .dio
-        .get("https://jsonplaceholder.typicode.com/comments");
+  ApiLoader getAll() => ApiLoader(
+        path: "/comments",
+        loader: (path) => ApiClient().dio.get(path),
+      );
 
-    return response.data;
-  }
+  ApiLoader getForPost(int postId) => ApiLoader(
+        path: "/posts/$postId/comments",
+        loader: (path) => ApiClient().dio.get(path),
+      );
 
-  Future<dynamic> getForPost(int postId) async {
-    var response = await ApiClient.instance()
-        .dio
-        .get("https://jsonplaceholder.typicode.com/posts/$postId/comments");
-
-    return response.data;
-  }
-
-  Future<dynamic> create(dynamic data) async {
-    var response = await ApiClient.instance()
-        .dio
-        .post("https://jsonplaceholder.typicode.com/comments", data: data);
-
-    return response.data;
-  }
+  ApiLoader create(data) => ApiLoader(
+        path: "/comments",
+        loader: (path) => ApiClient().dio.post(path, data: data),
+      );
 }

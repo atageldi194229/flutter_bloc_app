@@ -16,9 +16,6 @@ class PhotoListBloc extends ItemListBloc<ItemModel> {
         ) {
     on<LoadAlbumPhotosEvent>(onLoadItemList);
   }
-
-  @override
-  ItemModel getItemFromJson(e) => ItemModel.fromJson(e);
 }
 
 @immutable
@@ -28,7 +25,4 @@ class LoadAlbumPhotosEvent extends LoadItemListEvent<ItemModel> {
     required super.loader,
     required this.albumId,
   });
-
-  @override
-  String get path => "albums/$albumId/photos";
 }
