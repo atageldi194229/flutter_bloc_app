@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 
 final localhostOptions = BaseOptions(
   baseUrl: "https://jsonplaceholder.typicode.com",
-  connectTimeout: 5000,
-  receiveTimeout: 3000,
-  sendTimeout: 3000,
+  // connectTimeout: 5000,
+  // receiveTimeout: 3000,
+  // sendTimeout: 3000,
 );
 
 class ApiClient {
