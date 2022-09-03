@@ -1,6 +1,6 @@
 {
-    "name": "duralga_client",
-    "short_name": "duralga_client",
+    "name": "jsonplaceholder_app",
+    "short_name": "jsonplaceholder_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
