@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:jsonplaceholder_app/data/error/app_error.dart';
 import 'package:jsonplaceholder_app/logic/bloc/app_error_bloc/app_error_bloc.dart';
 import 'package:jsonplaceholder_app/logic/bloc/loading_bloc/loading_bloc.dart';
@@ -14,14 +13,11 @@ part 'item_list_state.dart';
 class ItemListBloc<T> extends Bloc<ItemListEvent<T>, ItemListState<T>> {
   final AppErrorBloc appErrorBloc;
   final LoadingBloc loadingBloc;
-  late LazyBox box;
 
   ItemListBloc({
     required this.appErrorBloc,
     required this.loadingBloc,
-  }) : super(const ItemListInitial()) {
-    box = Hive.lazyBox("appBox");
-  }
+  }) : super(const ItemListInitial());
 
   onLoadItemList(
     LoadItemListEvent<T> event,
