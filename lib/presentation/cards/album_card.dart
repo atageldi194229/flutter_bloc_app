@@ -72,6 +72,9 @@ class AlbumCard extends StatelessWidget {
                         ),
                         imageUrl: photo.thumbnailUrl,
                         fit: BoxFit.cover,
+                        errorWidget: (context, url, error) => const Center(
+                          child: Icon(Icons.error),
+                        ),
                       );
                     }
 
